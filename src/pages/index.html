@@ -1,12 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
+
 <body>
-  <h1>卡哈哈哈哈哈哈哈 你瞅啥啊</h1>
+  <div id="app"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/18.2.0/umd/react-dom.development.min.js"></script>
+  <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.js"></script>
+  <script type='text/babel'>
+
+    function App() {
+      const [list, setList] = React.useState([]);
+      console.log(list, 'list');
+      return <h1>
+        <button onClick={async () => {
+          let url = 'http://localhost:8000/moment?offset=0&size=10';
+          try {
+            let response = await fetch(url);
+            const result = await response.json();
+            console.log(result, "result");
+            setList(result)
+          } catch (error) {
+            console.log('Request Failed', error);
+          }
+        }}>
+          测试数据
+        </button>
+        {
+          list.map(item => {
+            return <div key={item.id}>
+              <p>{item.id} - {item.content}</p>
+              <p></p>
+              <p>{item.createTime}</p>
+            </div>
+          })
+        }
+      </h1>
+    }
+
+    ReactDOM.render(<App />, document.querySelector('#app'))
+  </script>
 </body>
+
 </html>
